@@ -1,0 +1,1 @@
+export const api = process.env.REACT_API_TODOS_API_URL || "https://5b794e5ffb11c80014536245.mockapi.io/api/v1/todos"

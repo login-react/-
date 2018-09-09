@@ -1,0 +1,9 @@
+.DefaultColor {
+    color: red;
+    font-weight: bold;
+}
+
+.ChangeColor {
+    color: blue;
+    font-weight: bold;
+}
