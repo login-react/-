@@ -35,7 +35,7 @@ export default  class ES6 extends React.Component {
 
         return(
             <div>
-               124
+               1249987654
             </div>
         );
     }
