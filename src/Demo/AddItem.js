@@ -24,10 +24,10 @@ export default class AddItem extends React.Component {
             <div
                 onClick={this.handleDelete}>
                 {this.props.content}
-                <input type="button" value="这是一个测试" onClick={() => this.props.sendDataForm('aa')}/>
-                <div>
-                    <button onClick={this.handleGrent}>test</button>
-                </div>
+                {/*<input type="button" value="这是一个测试" onClick={() => this.props.sendDataForm('aa')}/>*/}
+                {/*<div>*/}
+                    {/*<button onClick={this.handleGrent}>test</button>*/}
+                {/*</div>*/}
             </div>
         );
     }
