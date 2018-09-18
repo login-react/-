@@ -178,8 +178,34 @@ export default class Object1 extends React.Component {
 
 
 
-
-
+--回调
+               getTsLog = async (id, callback = { success: () => {}, fail: () => {}}) => {
+                      try{
+                                 const { response: ts} = await getTsLog(id);
+                      }           callback.success({ ...ts})
+                                 
+               }
+                                 
+              // 点击详情内容
+              toDetail = val => () => {
+                this.props.getTsLog(val.id, {
+                  success: val => {
+                    this.setState({
+                      modalVisible: true,
+                      detailValue: val
+                    });
+                  }
+                });
+              };
+                
+                                    
+                                    
+             {
+                title: '操作',
+                dataIndex: '',
+                key: '',
+                render: val => <Btn onClick={this.toDetail(val)}>详情</Btn>
+             }
 
 
 
