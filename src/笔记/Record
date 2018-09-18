@@ -1,0 +1,127 @@
+export async function getKeywords() {
+  return request.get('/vconfig/solr-key');
+}
+
+
+@observable keys = [];
+@action
+getKeywords = async () => {
+  try {
+    const { response: key } = await getKeywords();
+    this.keys = key.map((val, index) => ({
+      key: val.key,
+      index: index + 1
+    }));
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { observer, inject } from 'mobx-react';
+import { toArray as _toArray } from 'lodash';
+import { Card, Table, Button, notification, Modal } from 'antd';
+import { AButton as Btn, ScrollBox } from '~/components/MyStyle';
+import Nav from '~/components/Nav';
+import Create from './Create';
+// import Detail from './Detail';
+@inject(({ user }) => ({
+  keys: user.keys,
+  deleteUser: user.deleteUser,
+  getKeywords: user.getKeywords
+}))
+@observer
+class index extends Component {
+  componentDidMount() {
+    this.props.getKeywords();
+  }
+
+  ToDelete = val => () => {
+    Modal.confirm({
+      title: `确认${val.name || ''}?`,
+      onOk: () => {
+        this.props.deleteUser(val.id, {
+          success: () => {
+            notification.success({
+              message: '成功',
+              description: '关键字删除成功'
+            });
+            this.refreshTeachers();
+          },
+          fail: err => {
+            notification.fail({
+              message: '失败',
+              description: err.message
+            });
+          }
+        });
+      },
+      onCancel: () => {}
+    });
+  };
+
+  // 新增关键字
+  toCreatekeywords = () => {
+    console.log('创建关键字');
+    this.teacherCreate._appClick();
+  };
+
+  refreshTeachers = () => {
+    this.props.getAllTeachersAndService();
+  };
+
+  render() {
+    console.log('0000000', this.props);
+    const { keys } = this.props;
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'index',
+        key: 'index'
+      },
+      {
+        title: '关键字',
+        dataIndex: 'key',
+        key: 'key'
+      },
+
+      {
+        title: '操作',
+        dataIndex: '',
+        key: '',
+        render: record => (
+          <div>
+            <Btn onClick={this.ToDelete(record)}>删除</Btn>
+          </div>
+        )
+      }
+    ];
+    return (
+      <ScrollBox>
+        <Nav Name="关键字管理" />
+        <Card title={<h2>关键字列表</h2>}>
+          <Button onClick={this.toCreatekeywords} style={{ marginBottom: '10px' }} type="primary">
+            新增关键字
+          </Button>
+
+          <Table dataSource={_toArray(keys)} columns={columns} />
+        </Card>
+        {/* 新增关键字 */}
+        <Create
+          refreshTeachers={this.refreshTeachers}
+          onRef={node => (this.teacherCreate = node)}
+        />
+      </ScrollBox>
+    );
+  }
+}
+index.propTypes = {
+  keys: PropTypes.array,
+  getAllTeachersAndService: PropTypes.func,
+  deleteUser: PropTypes.func,
+  getKeywords: PropTypes.func
+};
+
+export default index;
