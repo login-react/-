@@ -210,7 +210,19 @@ export default class Object1 extends React.Component {
 
 
 
+非DOM属性 dangerouslySetInnerHTML： 
+    var style = {
+        color: 'red';
+}
+  <p style={style}></p>
 
+var rawHTML = {
+    __html:"<h1>I'm inner HTML</h1>"
+}
+
+dangerouslySetInnerHTML={rawHTML}
+                                                           
+                                               
 
 
 
